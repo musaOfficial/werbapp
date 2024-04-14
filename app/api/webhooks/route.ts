@@ -1,14 +1,11 @@
 import { Webhook } from 'svix'
 import { headers } from 'next/headers'
 import { WebhookEvent } from '@clerk/nextjs/server'
-import { createOrUpdateUser } from '@/actions/user'
 import connectMongo from '@/utils/connectMongo'
-import { CreateUserDTO } from '@/dto/CreateUserDTO'
-import User from '@/models/User'
-import { NextRequest, NextResponse } from 'next/server'
-import { HttpStatusCode } from 'axios'
-export async function POST(req: NextRequest) {
-    await connectMongo();
+ 
+export async function POST(req: Request) {
+    await connectMongo
+ 
   // You can find this in the Clerk Dashboard -> Webhooks -> choose the webhook
   const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET
  
@@ -53,7 +50,7 @@ export async function POST(req: NextRequest) {
   }
  
   // Get the ID and type
-  const { id  } = evt.data;
+  const { id } = evt.data;
   const eventType = evt.type;
  
   console.log(`Webhook with and ID of ${id} and type of ${eventType}`)

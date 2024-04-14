@@ -56,7 +56,6 @@ export async function POST(req: Request) {
 
   try {
     // Connect to the database
-    await connectMongo();
   } catch (error) {
     console.error('Error connecting to the database:', error);
     return new Response('Error connecting to the database', {

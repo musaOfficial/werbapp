@@ -1,9 +1,9 @@
 export type CreateUserDTO = {
-    clerkId: string,
-    email: string,
-    password: string,
-    firstName: string,
-    lastName: string,
+    clerkId: String,
+    email: String,
+    password: String,
+    firstName: String,
+    lastName: String,
     coins: Number,
     // winnings:
 };

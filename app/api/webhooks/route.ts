@@ -67,22 +67,14 @@ export async function POST(req: Request) {
             console.log("MongoDB connected successfully")
             const { id, email_addresses, first_name, last_name } = evt?.data;
             console.log("body created")
-            const user = await User.findOneAndUpdate(
-                {
-                    clerkId: id
-                },
-                {
-                    $set:{
-                        email: email_addresses[0].email_address,
-                        firstName: first_name,
-                        lastName: last_name,
-                    }
-                },
-                {
-                    upsert: true,
-                    new: true
-                }
-            );
+            const user = await User.create({
+                clerkId: id,
+                email: email_addresses[0].email_address,
+                password: "aösdklfjaslökfdj",
+                firstName: first_name,
+                lastName: last_name,
+                coins: 10
+            });
             console.log("user created")
             return NextResponse.json(
                 { user, message: 'Your user has been created' },

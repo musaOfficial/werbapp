@@ -57,32 +57,6 @@ export async function POST(req: NextRequest) {
  
   console.log(`Webhook with and ID of ${id} and type of ${eventType}`)
   console.log('Webhook body:', body)
-
-  if(eventType === "user.created" || eventType === "user.updated"){
-    
-    const { id, email_addresses, first_name, last_name } = evt?.data;
-    try {
-        console.log("MongoDB connected successfully")
-        const { id, email_addresses, first_name, last_name } = evt?.data;
-        console.log("body created")
-        const user = await User.create({
-            clerkId: id,
-            email: email_addresses[0].email_address,
-            password: "aösdklfjaslökfdj",
-            firstName: first_name,
-            lastName: last_name,
-            coins: 10
-        });
-        console.log("user created")
-        return NextResponse.json(
-            { user, message: 'Your user has been created' },
-            { status: HttpStatusCode.Created },
-        );
-        
-    } catch (error) {
-        return NextResponse.json({ message: error }, { status: HttpStatusCode.BadRequest });
-    }
-  }
  
   return new Response('', { status: 200 })
 }

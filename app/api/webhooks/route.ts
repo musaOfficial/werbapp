@@ -4,8 +4,6 @@ import { WebhookEvent } from '@clerk/nextjs/server'
 import connectMongo from '@/utils/connectMongo'
  
 export async function POST(req: Request) {
-    await connectMongo();
- 
   // You can find this in the Clerk Dashboard -> Webhooks -> choose the webhook
   const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET
  

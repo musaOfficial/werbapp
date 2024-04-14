@@ -10,10 +10,7 @@ async function connectMongo() {
         return cached.connection;
     }
     if (!cached.promise) {
-        const opts = {
-            bufferCommands: false,
-        };
-        cached.promise = mongoose.connect(DATABASE_URL, opts);
+        cached.promise = mongoose.connect(DATABASE_URL);
     }
     try {
         cached.connection = await cached.promise;

@@ -23,7 +23,7 @@ export const createOrUpdateUser = async(id: String, email_addresses: Array<any>,
             }
         );
 
-        await user.save();
+        throw new Error("I reached createOrUpdateUser");
 
         return NextResponse.json(
             { user, message: 'Your user has been created' },

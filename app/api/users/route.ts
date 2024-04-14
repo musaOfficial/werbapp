@@ -6,9 +6,13 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(req: NextRequest) {
     try {
+        console.log("POST req activated")
         await connectMongo();
+        console.log("MongoDB connected successfully")
         const body: CreateUserDTO = await req.json();
+        console.log("body created")
         const user = await User.findOneAndUpdate(body, {upsert: true});
+        console.log("user created")
         return NextResponse.json(
             { user, message: 'Your user has been created' },
             { status: HttpStatusCode.Created },

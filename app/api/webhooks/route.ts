@@ -2,6 +2,11 @@ import { Webhook } from 'svix'
 import { headers } from 'next/headers'
 import { WebhookEvent } from '@clerk/nextjs/server'
 import { createOrUpdateUser } from '@/actions/user'
+import connectMongo from '@/utils/connectMongo'
+import { CreateUserDTO } from '@/dto/CreateUserDTO'
+import User from '@/models/User'
+import { NextResponse } from 'next/server'
+import { HttpStatusCode } from 'axios'
 export async function POST(req: Request) {
   // You can find this in the Clerk Dashboard -> Webhooks -> choose the webhook
   const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET
@@ -57,10 +62,36 @@ export async function POST(req: Request) {
     
     const { id, email_addresses, first_name, last_name } = evt?.data;
     try {
-        await createOrUpdateUser(id, email_addresses, first_name, last_name);
-        return new Response("User is created or updated", {
-            status: 200
-        });
+        try {
+            await connectMongo();
+            console.log("MongoDB connected successfully")
+            const { id, email_addresses, first_name, last_name } = evt?.data;
+            console.log("body created")
+            const user = await User.findOneAndUpdate(
+                {
+                    clerkId: id
+                },
+                {
+                    $set:{
+                        email: email_addresses[0].email_address,
+                        firstName: first_name,
+                        lastName: last_name
+                    }
+                },
+                {
+                    upsert: true,
+                    new: true
+                }
+            );
+            console.log("user created")
+            return NextResponse.json(
+                { user, message: 'Your user has been created' },
+                { status: HttpStatusCode.Created },
+            );
+            return NextResponse.json({ message: 'Product name is missing' }, { status: HttpStatusCode.BadRequest });
+        } catch (error) {
+            return NextResponse.json({ message: error }, { status: HttpStatusCode.BadRequest });
+        }
     } catch (error) {
         return new Response("Error occured" + error);
     }
